@@ -6,4 +6,5 @@ import com.badlogic.gdx.graphics.Texture;
 public class TextureBank {
     public static final Texture ball = new Texture(Gdx.files.internal("ball.png"));
     public static final Texture cell = new Texture(Gdx.files.internal("cell.png"));
+    public static final Texture racket = new Texture(Gdx.files.internal("racket.png"));
 }

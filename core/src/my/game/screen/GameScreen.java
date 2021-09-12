@@ -1,27 +1,36 @@
 package my.game.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import my.game.ArkanoidGame;
+import my.game.GameWorldCreator;
 import my.game.config.GameConstant;
+import my.game.controller.RacketController;
 import my.game.human.model.Squad;
 import my.game.model.Ball;
 import my.game.model.Cell;
 import my.game.model.GameObject;
+import my.game.model.Racket;
 
 public class GameScreen implements Screen {
     private ArkanoidGame game;
-    private Array<GameObject> objects;
+    private GameWorldCreator creator;
+    private RacketController racketController;
+    private Array<Cell> cells;
+    private Racket racket;
+    private Ball ball;
 
     public GameScreen(ArkanoidGame game) {
         this.game = game;
-        this.objects = new Array<>();
-        objects.add(new Ball(GameConstant.CENTER_WIDTH, 40));
-        objects.add(new Cell(GameConstant.CENTER_WIDTH, GameConstant.CENTER_HEIGHT));
-        objects.add(new Cell(GameConstant.CENTER_WIDTH, GameConstant.CENTER_HEIGHT + Cell.height));
-        objects.add(new Cell(GameConstant.CENTER_WIDTH, GameConstant.CENTER_HEIGHT + Cell.height * 2));
+        racketController = new RacketController();
+        creator = new GameWorldCreator();
+        this.ball = new Ball(GameConstant.CENTER_WIDTH, 40);
+        this.racket = new Racket(GameConstant.CENTER_WIDTH, 0);
+        this.cells = creator.makeCells();
     }
 
     @Override
@@ -33,10 +42,13 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
         game.batch.begin();
-        for(GameObject go: objects){
-            game.batch.draw(go.getTexture(), go.x, go.y);
+        for(Cell cell: cells){
+            game.batch.draw(cell.getTexture(), cell.x, cell.y, cell.width, cell.height);
         }
+        game.batch.draw(racket.getTexture(), racket.x, racket.y, racket.width, racket.height);
+        game.batch.draw(ball.getTexture(), ball.x, ball.y, ball.width, ball.height);
         game.batch.end();
+        racketController.listenTouchKeyAndChangeCoordinate(racket);
     }
 
     @Override

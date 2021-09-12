@@ -1,15 +1,15 @@
 package my.game.model;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 import my.game.TextureBank;
 
-public class Ball extends GameObject {
-    private static final Texture texture = TextureBank.ball;
-    public static final float width = 64f;
+public class Racket extends GameObject {
+    private static final Texture texture = TextureBank.racket;
+    public static final float width = 256f;
     public static final float height = 64f;
+    public final float speed = 64f;
 
-    public Ball(float x, float y) {
+    public Racket(float x, float y) {
         super(x, y, width, height);
     }
 
